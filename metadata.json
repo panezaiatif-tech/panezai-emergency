@@ -1,0 +1,6 @@
+{
+  "name": "🇵🇰 PANEZAI EMERGENCY NETWORK",
+  "description": "Comprehensive verified emergency network across Pakistan covering all provinces, divisions, districts, and tehsils. Instant SOS, verified contacts, and nearest emergency facilities.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

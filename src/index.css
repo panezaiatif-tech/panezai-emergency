@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  [dir="rtl"] {
+    font-family: 'Noto Naskh Arabic', 'Noto Nastaliq Urdu', system-ui, sans-serif;
+  }
+}
+
+.font-nastaliq {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
+}
+
+/* Custom scrollbar for horizontal categories */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(74, 222, 128, 0.25);
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 222, 128, 0.5);
+}
