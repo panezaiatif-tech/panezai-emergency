@@ -1,4 +1,4 @@
-import { SupportedLanguage } from '../types/emergency.ts';
+import type { SupportedLanguage } from '../types/emergency.ts';
 
 export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
   en: {

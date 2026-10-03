@@ -1,4 +1,4 @@
-import {
+import type {
   CallLog,
   ChatConversation,
   ChatMessage,

@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/emergency.ts';
+import type { Coordinates } from '../types/emergency.ts';
 
 // Known centroids for auto-detecting closest district/city
 export const PAKISTAN_MAJOR_CITIES = [

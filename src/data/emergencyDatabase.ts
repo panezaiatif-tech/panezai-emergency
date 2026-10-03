@@ -1,4 +1,4 @@
-import { EmergencyRecord } from '../types/emergency.ts';
+import type { EmergencyRecord } from '../types/emergency.ts';
 
 export const PROVINCES = [
   'All Pakistan / National',

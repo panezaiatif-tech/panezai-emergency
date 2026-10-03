@@ -140,3 +140,32 @@ export interface VoiceIntakeResult {
   locationHint?: string;
   spokenAdvice: string;
 }
+
+export interface EmergencyGuidanceTopic {
+  id: string;
+  title: string;
+  icon: string;
+  category: string;
+  summary: string;
+  immediateActions: string[];
+  whileWaiting: string[];
+  whatToTellResponders: string[];
+  safetyWarnings: string[];
+  verifiedContact: {
+    service: string;
+    number: string;
+  };
+}
+
+export interface VoiceAssistantResponse {
+  spokenReply: string;
+  isEmergencyMode: boolean;
+  emergencyType?: string;
+  matchedRecords: EmergencyRecord[];
+  guidance?: string[];
+  guidanceTopic?: EmergencyGuidanceTopic;
+  suggestedActions: ('ambulance' | 'police' | 'hospital' | 'family' | 'location')[];
+  safetyNote?: string;
+}
+
+export const EMERGENCY_RUNTIME_READY = true;

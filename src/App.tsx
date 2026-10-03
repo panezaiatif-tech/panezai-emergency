@@ -1,6 +1,6 @@
 /**
  * 🇵🇰 PANEZAI EMERGENCY NETWORK
- * “One App. Help When You Need It.”
+ * “ONE APP. HELP WHEN YOU NEED IT.”
  * Created by ATIF PANEZAI
  */
 
@@ -25,8 +25,10 @@ import {
   Radio,
   Mic,
   Share2,
+  Map as MapIcon,
+  BookOpen,
 } from 'lucide-react';
-import {
+import type {
   Coordinates,
   EmergencyCategory,
   EmergencyRecord,
@@ -47,18 +49,19 @@ import { LocationSelector } from './components/LocationSelector.tsx';
 import { EmergencySearchBar } from './components/EmergencySearchBar.tsx';
 import { EmergencyCard } from './components/EmergencyCard.tsx';
 import { NearestServices } from './components/NearestServices.tsx';
+import { EmergencyMap } from './components/EmergencyMap.tsx';
 import { SafetyDisclaimer } from './components/SafetyDisclaimer.tsx';
 import { FamilyContactsModal } from './components/FamilyContactsModal.tsx';
 import { ReportIssueModal } from './components/ReportIssueModal.tsx';
 import { AdminModal } from './components/AdminModal.tsx';
-import { AiAssistantModal } from './components/AiAssistantModal.tsx';
+import { VoiceAssistantModal } from './components/VoiceAssistantModal.tsx';
+import { EmergencyGuidanceModal } from './components/EmergencyGuidanceModal.tsx';
 import { PhoneDialer } from './components/PhoneDialer.tsx';
 import { WhatsAppChat } from './components/WhatsAppChat.tsx';
-import { VoiceEmergencyListener } from './components/VoiceEmergencyListener.tsx';
 import { CommunityAlerts } from './components/CommunityAlerts.tsx';
 import { PanezaiLogo } from './components/PanezaiLogo.tsx';
 
-type MainAppModule = 'emergency' | 'dialer' | 'whatsapp' | 'community';
+type MainAppModule = 'emergency' | 'map' | 'dialer' | 'whatsapp' | 'community';
 
 export default function App() {
   // App Language
@@ -87,7 +90,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Active Main App Module (4 Primary Pillars requested by user)
+  // Active Main App Module
   const [activeModule, setActiveModule] = useState<MainAppModule>('emergency');
   const [emergencySubTab, setEmergencySubTab] = useState<'directory' | 'nearest'>('directory');
 
@@ -95,8 +98,8 @@ export default function App() {
   const [isSosOpen, setIsSosOpen] = useState<boolean>(false);
   const [isFamilyOpen, setIsFamilyOpen] = useState<boolean>(false);
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
-  const [isAiOpen, setIsAiOpen] = useState<boolean>(false);
-  const [isVoiceListenerOpen, setIsVoiceListenerOpen] = useState<boolean>(false);
+  const [isVoiceAssistantOpen, setIsVoiceAssistantOpen] = useState<boolean>(false);
+  const [isGuidanceOpen, setIsGuidanceOpen] = useState<boolean>(false);
   const [reportTargetRecord, setReportTargetRecord] = useState<EmergencyRecord | null>(null);
 
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
@@ -282,13 +285,13 @@ export default function App() {
         onOpenSos={() => setIsSosOpen(true)}
         onOpenFamily={() => setIsFamilyOpen(true)}
         onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenVoiceListener={() => setIsVoiceListenerOpen(true)}
+        onOpenVoiceListener={() => setIsVoiceAssistantOpen(true)}
         lastSyncTime={lastSyncTime}
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* ========================================================
-            HERO SECTION WITH HUGE 🆘 SOS ACTIVATION BANNER
+            HERO SECTION WITH 🆘 SOS & TALK TO EMERGENCY AI
            ======================================================== */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A0A12] via-[#0F172A] to-[#0A1629] border-2 border-red-600/70 p-5 sm:p-8 shadow-2xl shadow-red-950/50">
           <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
@@ -296,45 +299,48 @@ export default function App() {
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-red-400 bg-red-950/80 border border-red-800/80 px-3 py-1 rounded-full mb-3 shadow">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                <span>National Crisis & Multi-Communication Hub</span>
+                <span>National Emergency & AI Voice Assistance Companion</span>
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
                 🇵🇰 PANEZAI EMERGENCY NETWORK
               </h2>
               <p className="text-base sm:text-lg text-slate-300 font-medium mt-1">
-                “One App. Help When You Need It.”
+                “ONE APP. HELP WHEN YOU NEED IT.”
               </p>
               <p className="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
-                Emergency Calling · Free Offline SIM Calling · WhatsApp Direct Chat · Voice Emergency Listener · Community Safety Broadcasts.
+                Live AI Voice Assistant · 22-Category Verified Database · Interactive Vector Map · 1-Tap Calling · First-Aid Guidance.
               </p>
 
-              {/* Action Buttons in Hero */}
-              <div className="flex flex-wrap items-center gap-2.5 mt-4">
+              {/* Major Action Buttons in Hero */}
+              <div className="flex flex-wrap items-center gap-2.5 mt-5">
+                {/* 🎙️ TALK TO EMERGENCY AI (Core Feature) */}
                 <button
                   type="button"
-                  onClick={() => setIsVoiceListenerOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm inline-flex items-center gap-2 shadow-lg shadow-emerald-950/70 cursor-pointer transition-all"
+                  onClick={() => setIsVoiceAssistantOpen(true)}
+                  className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm sm:text-base inline-flex items-center gap-2.5 shadow-xl shadow-emerald-950/80 border border-emerald-400/60 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                 >
-                  <Mic className="w-4 h-4 animate-bounce text-emerald-100" />
-                  <span>🎙️ Speak Emergency (Listen to Me)</span>
+                  <Mic className="w-5 h-5 animate-bounce text-emerald-200" />
+                  <span>🎙️ TALK TO EMERGENCY AI</span>
                 </button>
 
+                {/* 🗺️ EMERGENCY MAP */}
                 <button
                   type="button"
-                  onClick={() => setActiveModule('dialer')}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 border border-slate-700 transition-colors"
+                  onClick={() => setActiveModule('map')}
+                  className="px-4 py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 border border-slate-700 transition-colors cursor-pointer"
                 >
-                  <Phone className="w-4 h-4 text-emerald-400" />
-                  <span>Free Offline Dialer</span>
+                  <MapIcon className="w-4 h-4 text-emerald-400" />
+                  <span>Interactive Map</span>
                 </button>
 
+                {/* 📖 EMERGENCY GUIDANCE */}
                 <button
                   type="button"
-                  onClick={() => setActiveModule('whatsapp')}
-                  className="px-4 py-2.5 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] hover:text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 border border-[#25D366]/40 transition-colors"
+                  onClick={() => setIsGuidanceOpen(true)}
+                  className="px-4 py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 border border-slate-700 transition-colors cursor-pointer"
                 >
-                  <MessageCircle className="w-4 h-4 fill-current" />
-                  <span>WhatsApp Chat</span>
+                  <BookOpen className="w-4 h-4 text-amber-400" />
+                  <span>First-Aid Guidance</span>
                 </button>
               </div>
             </div>
@@ -357,157 +363,208 @@ export default function App() {
             </div>
           </div>
 
-          {/* Quick Direct-Dial Bar below Hero */}
-          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mt-6 pt-6 border-t border-slate-800/80">
+          {/* ========================================================
+              LARGE EASY-TO-PRESS EMERGENCY CATEGORY BUTTONS
+             ======================================================== */}
+          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-2.5 mt-6 pt-6 border-t border-slate-800/80">
+            {/* 🚑 Ambulance */}
             <button
               type="button"
-              onClick={() => handleNativeCall('1122', 'Rescue 1122')}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 hover:bg-red-950/60 border border-slate-700 hover:border-red-500/80 transition-all text-xs cursor-pointer text-left"
+              onClick={() => handleNativeCall('1122', 'Rescue 1122 Ambulance')}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-red-950/70 hover:bg-red-900 border border-red-700/80 text-white transition-all cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🚑</span>
-                <div>
-                  <div className="font-bold text-white">Rescue 1122</div>
-                  <div className="text-[10px] text-slate-400">Ambulance & Fire</div>
-                </div>
-              </div>
-              <span className="font-mono font-black text-red-400 text-sm">1122</span>
+              <span className="text-2xl mb-1">🚑</span>
+              <span className="font-extrabold text-xs">Ambulance</span>
+              <span className="font-mono text-[11px] text-red-300 font-bold">1122</span>
             </button>
 
+            {/* 👮 Police */}
             <button
               type="button"
-              onClick={() => handleNativeCall('15', 'Police 15')}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 hover:bg-blue-950/60 border border-slate-700 hover:border-blue-500/80 transition-all text-xs cursor-pointer text-left"
+              onClick={() => handleNativeCall('15', 'Madadgar Police 15')}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-blue-950/70 hover:bg-blue-900 border border-blue-700/80 text-white transition-all cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">👮</span>
-                <div>
-                  <div className="font-bold text-white">Police 15</div>
-                  <div className="text-[10px] text-slate-400">Madadgar Helpline</div>
-                </div>
-              </div>
-              <span className="font-mono font-black text-blue-400 text-sm">15</span>
+              <span className="text-2xl mb-1">👮</span>
+              <span className="font-extrabold text-xs">Police</span>
+              <span className="font-mono text-[11px] text-blue-300 font-bold">15</span>
             </button>
 
+            {/* 🚒 Fire */}
             <button
               type="button"
               onClick={() => handleNativeCall('16', 'Fire Brigade 16')}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 hover:bg-amber-950/60 border border-slate-700 hover:border-amber-500/80 transition-all text-xs cursor-pointer text-left"
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-amber-950/70 hover:bg-amber-900 border border-amber-700/80 text-white transition-all cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🚒</span>
-                <div>
-                  <div className="font-bold text-white">Fire Brigade</div>
-                  <div className="text-[10px] text-slate-400">National Fire Line</div>
-                </div>
-              </div>
-              <span className="font-mono font-black text-amber-400 text-sm">16</span>
+              <span className="text-2xl mb-1">🚒</span>
+              <span className="font-extrabold text-xs">Fire</span>
+              <span className="font-mono text-[11px] text-amber-300 font-bold">16</span>
             </button>
 
+            {/* 🏥 Hospital */}
             <button
               type="button"
-              onClick={() => handleNativeCall('130', 'Motorway Police NHMP')}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 hover:bg-emerald-950/60 border border-slate-700 hover:border-emerald-500/80 transition-all text-xs cursor-pointer text-left"
+              onClick={() => {
+                setSelectedCategory('Hospital Emergency');
+                setActiveModule('emergency');
+                setEmergencySubTab('directory');
+              }}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-rose-950/70 hover:bg-rose-900 border border-rose-700/80 text-white transition-all cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🚓</span>
-                <div>
-                  <div className="font-bold text-white">Motorway NHMP</div>
-                  <div className="text-[10px] text-slate-400">Highway Help 24/7</div>
-                </div>
-              </div>
-              <span className="font-mono font-black text-emerald-400 text-sm">130</span>
+              <span className="text-2xl mb-1">🏥</span>
+              <span className="font-extrabold text-xs">Hospital</span>
+              <span className="text-[11px] text-rose-300 font-semibold">Trauma Casualty</span>
+            </button>
+
+            {/* 🩸 Blood */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedCategory('Blood Bank');
+                setActiveModule('emergency');
+                setEmergencySubTab('directory');
+              }}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-rose-950/70 hover:bg-rose-900 border border-rose-700/80 text-white transition-all cursor-pointer shadow"
+            >
+              <span className="text-2xl mb-1">🩸</span>
+              <span className="font-extrabold text-xs">Blood Bank</span>
+              <span className="text-[11px] text-rose-300 font-semibold">24/7 Supply</span>
+            </button>
+
+            {/* 🛠️ Mechanic */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedCategory('Mechanic');
+                setActiveModule('emergency');
+                setEmergencySubTab('directory');
+              }}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white transition-all cursor-pointer shadow"
+            >
+              <span className="text-2xl mb-1">🛠️</span>
+              <span className="font-extrabold text-xs">Mechanic</span>
+              <span className="text-[11px] text-slate-400 font-semibold">Breakdown</span>
+            </button>
+
+            {/* 🚗 Towing */}
+            <button
+              type="button"
+              onClick={() => handleNativeCall('130', 'Motorway Police NHMP & Towing')}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-700/80 text-white transition-all cursor-pointer shadow col-span-2 sm:col-span-1"
+            >
+              <span className="text-2xl mb-1">🚗</span>
+              <span className="font-extrabold text-xs">Towing / NHMP</span>
+              <span className="font-mono text-[11px] text-emerald-300 font-bold">130</span>
             </button>
           </div>
         </section>
 
         {/* ========================================================
-            THE 4 MAIN NAVIGATION PILLARS (Requested by user)
+            NAVIGATION TABS
            ======================================================== */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
-          {/* Pillar 1: Emergency Numbers */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-2.5">
+          {/* Tab 1: Emergency Directory */}
           <button
             type="button"
             onClick={() => setActiveModule('emergency')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
               activeModule === 'emergency'
                 ? 'bg-gradient-to-r from-red-950/80 to-slate-900 border-red-500 text-white ring-2 ring-red-500/30'
                 : 'bg-[#0B1429] border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">🚨</span>
-              <span className="text-[10px] font-bold font-mono bg-black/40 px-2 py-0.5 rounded text-emerald-400">
-                {records.length} Numbers
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xl">🚨</span>
+              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-black/40 px-1.5 py-0.5 rounded">
+                {records.length}
               </span>
             </div>
-            <div className="font-extrabold text-sm sm:text-base text-white">1. Emergency Numbers</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Verified provincial & city helplines</div>
+            <div className="font-extrabold text-xs sm:text-sm text-white">Emergency Directory</div>
+            <div className="text-[10px] text-slate-400">22 verified categories</div>
           </button>
 
-          {/* Pillar 2: Free Dialer & Offline Calling */}
+          {/* Tab 2: Interactive Vector Map */}
           <button
             type="button"
-            onClick={() => setActiveModule('dialer')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
-              activeModule === 'dialer'
+            onClick={() => setActiveModule('map')}
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
+              activeModule === 'map'
                 ? 'bg-gradient-to-r from-emerald-950/80 to-slate-900 border-emerald-500 text-white ring-2 ring-emerald-500/30'
                 : 'bg-[#0B1429] border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">📞</span>
-              <span className="text-[10px] font-bold font-mono bg-emerald-950 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded">
-                NO INTERNET
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xl">🗺️</span>
+              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-black/40 px-1.5 py-0.5 rounded">
+                LIVE
               </span>
             </div>
-            <div className="font-extrabold text-sm sm:text-base text-white">2. Free Calling & Dialer</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Common calling family/friends via SIM</div>
+            <div className="font-extrabold text-xs sm:text-sm text-white">Emergency Map</div>
+            <div className="text-[10px] text-slate-400">Highways & facilities</div>
           </button>
 
-          {/* Pillar 3: WhatsApp & Messages */}
+          {/* Tab 3: Free Cellular Dialer */}
+          <button
+            type="button"
+            onClick={() => setActiveModule('dialer')}
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
+              activeModule === 'dialer'
+                ? 'bg-gradient-to-r from-blue-950/80 to-slate-900 border-blue-500 text-white ring-2 ring-blue-500/30'
+                : 'bg-[#0B1429] border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xl">📞</span>
+              <span className="text-[10px] font-mono font-bold text-blue-400 bg-black/40 px-1.5 py-0.5 rounded">
+                OFFLINE
+              </span>
+            </div>
+            <div className="font-extrabold text-xs sm:text-sm text-white">Free Dialer</div>
+            <div className="text-[10px] text-slate-400">Offline SIM calls</div>
+          </button>
+
+          {/* Tab 4: WhatsApp Chat */}
           <button
             type="button"
             onClick={() => setActiveModule('whatsapp')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
               activeModule === 'whatsapp'
                 ? 'bg-gradient-to-r from-teal-950/80 to-slate-900 border-[#25D366] text-white ring-2 ring-[#25D366]/30'
                 : 'bg-[#0B1429] border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">💬</span>
-              <span className="text-[10px] font-bold font-mono bg-emerald-950 text-[#25D366] border border-emerald-800/60 px-2 py-0.5 rounded">
-                WHATSAPP
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xl">💬</span>
+              <span className="text-[10px] font-mono font-bold text-[#25D366] bg-black/40 px-1.5 py-0.5 rounded">
+                CHAT
               </span>
             </div>
-            <div className="font-extrabold text-sm sm:text-base text-white">3. WhatsApp & Chats</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Direct chat, messaging & GPS sharing</div>
+            <div className="font-extrabold text-xs sm:text-sm text-white">WhatsApp & Chat</div>
+            <div className="text-[10px] text-slate-400">Direct message launcher</div>
           </button>
 
-          {/* Pillar 4: Community Alerts */}
+          {/* Tab 5: Community Broadcasts */}
           <button
             type="button"
             onClick={() => setActiveModule('community')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer shadow-lg ${
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer shadow-lg col-span-2 md:col-span-1 ${
               activeModule === 'community'
                 ? 'bg-gradient-to-r from-amber-950/80 to-slate-900 border-amber-500 text-white ring-2 ring-amber-500/30'
                 : 'bg-[#0B1429] border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">📢</span>
-              <span className="text-[10px] font-bold font-mono bg-amber-950 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xl">📢</span>
+              <span className="text-[10px] font-mono font-bold text-amber-400 bg-black/40 px-1.5 py-0.5 rounded">
                 BROADCAST
               </span>
             </div>
-            <div className="font-extrabold text-sm sm:text-base text-white">4. Community Alerts</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Share alerts through your number</div>
+            <div className="font-extrabold text-xs sm:text-sm text-white">Community Alerts</div>
+            <div className="text-[10px] text-slate-400">Share via your number</div>
           </button>
         </div>
 
         {/* ========================================================
-            MODULE 1: EMERGENCY DIRECTORY & NUMBERS
+            MODULE 1: EMERGENCY DIRECTORY & NEARBY
            ======================================================== */}
         {activeModule === 'emergency' && (
           <div className="space-y-6 animate-in fade-in duration-200">
@@ -531,7 +588,7 @@ export default function App() {
               language={language}
             />
 
-            {/* Sub-Tabs: Directory vs Nearest Facilities */}
+            {/* Sub-Tabs: Directory Cards vs Nearest GPS Facilities */}
             <div className="flex items-center justify-between gap-3 border-b border-slate-800 pb-2">
               <div className="flex items-center gap-2">
                 <button
@@ -564,14 +621,14 @@ export default function App() {
                 </button>
               </div>
 
-              {/* AI Emergency Assistant Quick Trigger */}
+              {/* Talk to AI Voice Assistant Button */}
               <button
                 type="button"
-                onClick={() => setIsAiOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-950/60 cursor-pointer transition-all"
+                onClick={() => setIsVoiceAssistantOpen(true)}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-950/60 cursor-pointer transition-all"
               >
-                <Bot className="w-4 h-4" />
-                <span className="hidden sm:inline">Ask Verified AI</span>
+                <Mic className="w-4 h-4 animate-pulse text-emerald-200" />
+                <span className="hidden sm:inline">Voice Assistant</span>
               </button>
             </div>
 
@@ -587,7 +644,7 @@ export default function App() {
                       <AlertTriangle className="w-7 h-7" />
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
-                      {t.noNumbersFound}
+                      “I'm unable to find a verified emergency number for this service and location.”
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed">
                       {t.noNumbersFoundDesc}
@@ -663,7 +720,21 @@ export default function App() {
         )}
 
         {/* ========================================================
-            MODULE 2: FREE DIALER & OFFLINE CALLING
+            MODULE 2: INTERACTIVE LIVE VECTOR MAP
+           ======================================================== */}
+        {activeModule === 'map' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            <EmergencyMap
+              records={records}
+              currentCoords={currentCoords}
+              language={language}
+              onCallNumber={handleNativeCall}
+            />
+          </div>
+        )}
+
+        {/* ========================================================
+            MODULE 3: FREE DIALER & OFFLINE CALLING
            ======================================================== */}
         {activeModule === 'dialer' && (
           <div className="space-y-4 animate-in fade-in duration-200">
@@ -677,7 +748,7 @@ export default function App() {
         )}
 
         {/* ========================================================
-            MODULE 3: WHATSAPP CHAT & MESSAGES PLACE
+            MODULE 4: WHATSAPP CHAT & MESSAGES
            ======================================================== */}
         {activeModule === 'whatsapp' && (
           <div className="space-y-4 animate-in fade-in duration-200">
@@ -691,7 +762,7 @@ export default function App() {
         )}
 
         {/* ========================================================
-            MODULE 4: COMMUNITY SAFETY BROADCASTS & SHARING
+            MODULE 5: COMMUNITY SAFETY BROADCASTS
            ======================================================== */}
         {activeModule === 'community' && (
           <div className="space-y-4 animate-in fade-in duration-200">
@@ -722,10 +793,10 @@ export default function App() {
 
             <div className="text-center md:text-right">
               <p className="font-semibold text-emerald-400 text-xs">
-                Created by ATIF PANEZAI
+                CREATED BY: ATIF PANEZAI
               </p>
               <p className="text-[11px] text-slate-400">
-                “One App. Help When You Need It.”
+                “ONE APP. HELP WHEN YOU NEED IT.”
               </p>
             </div>
           </div>
@@ -744,12 +815,45 @@ export default function App() {
           </div>
 
           <p className="text-center text-[10px] text-slate-400">
-            Official emergency data synchronized and cached locally on your device for uninterrupted offline readiness. Zero guessed numbers guarantee.
+            LAST DATABASE UPDATE: {new Date(lastSyncTime).toLocaleDateString()} · Official emergency data cached on device for low-internet and offline readiness. Zero guessed numbers guarantee.
           </p>
         </div>
       </footer>
 
-      {/* Modals */}
+      {/* ========================================================
+          MODALS
+         ======================================================== */}
+      {/* Voice Emergency Assistant Modal (Core Feature) */}
+      <VoiceAssistantModal
+        isOpen={isVoiceAssistantOpen}
+        onClose={() => setIsVoiceAssistantOpen(false)}
+        language={language}
+        currentCoords={currentCoords}
+        detectedLocationName={detectedLocationName}
+        onCallNumber={handleNativeCall}
+        onTriggerSos={() => {
+          setIsVoiceAssistantOpen(false);
+          setIsSosOpen(true);
+        }}
+        onFindHospital={() => {
+          setSelectedCategory('Hospital Emergency');
+          setActiveModule('emergency');
+          setEmergencySubTab('directory');
+        }}
+        onOpenFamily={() => {
+          setIsFamilyOpen(true);
+        }}
+      />
+
+      {/* Emergency Guidance Manual Modal */}
+      <EmergencyGuidanceModal
+        isOpen={isGuidanceOpen}
+        onClose={() => setIsGuidanceOpen(false)}
+        language={language}
+        onCallNumber={handleNativeCall}
+      />
+
+      {/* SOS Modal */}
       <SOSModal
         isOpen={isSosOpen}
         onClose={() => setIsSosOpen(false)}
@@ -774,15 +878,7 @@ export default function App() {
         }}
       />
 
-      <VoiceEmergencyListener
-        isOpen={isVoiceListenerOpen}
-        onClose={() => setIsVoiceListenerOpen(false)}
-        language={language}
-        currentCoords={currentCoords}
-        detectedLocationName={detectedLocationName}
-        onCallNumber={handleNativeCall}
-      />
-
+      {/* Family Contacts Modal */}
       <FamilyContactsModal
         isOpen={isFamilyOpen}
         onClose={() => setIsFamilyOpen(false)}
@@ -793,6 +889,7 @@ export default function App() {
         detectedLocationName={detectedLocationName}
       />
 
+      {/* Report Issue Modal */}
       <ReportIssueModal
         isOpen={!!reportTargetRecord}
         onClose={() => setReportTargetRecord(null)}
@@ -801,6 +898,7 @@ export default function App() {
         language={language}
       />
 
+      {/* Admin Portal Modal */}
       <AdminModal
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
@@ -812,14 +910,6 @@ export default function App() {
         onAddAuditLog={handleAddAuditLog}
         onResetDb={handleResetDb}
         language={language}
-      />
-
-      <AiAssistantModal
-        isOpen={isAiOpen}
-        onClose={() => setIsAiOpen(false)}
-        language={language}
-        currentCoords={currentCoords}
-        detectedLocationName={detectedLocationName}
       />
     </div>
   );

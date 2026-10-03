@@ -63,15 +63,15 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Listen to My Emergency Button */}
+            {/* Talk to AI Voice Assistant Button */}
             <button
               type="button"
               onClick={onOpenVoiceListener}
-              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-600/60 text-emerald-300 hover:text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
-              title="Voice emergency listener"
+              className="p-2 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-emerald-950 border border-emerald-400/50"
+              title="Talk to AI Voice Emergency Assistant"
             >
-              <Mic className="w-4 h-4 text-emerald-400 animate-pulse" />
-              <span className="hidden md:inline">Voice Intake</span>
+              <Mic className="w-4 h-4 text-emerald-200 animate-bounce" />
+              <span className="hidden sm:inline">🎙️ AI Voice Assistant</span>
             </button>
 
             {/* Language Switcher */}
